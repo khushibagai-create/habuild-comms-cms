@@ -320,10 +320,10 @@ function defaultToolsCard(cardIndex: number): Record<string, unknown> {
   };
 }
 
-/* Today — single-card poster with four variations.
-   Mirrors newTodayCard(variation) in 10-comms-cms.html. Each variation has a
-   fully self-contained shape so toggling never bleeds stale fields between
-   variations. */
+/* Today — single-card preview with four variations.
+   Reworked for the 2026-06 App Pod Design. Title + description live on
+   the card itself (not on a dark backdrop above). Each variation seeds
+   its own ribbon copy, primary CTA, and secondary text-link CTA. */
 function defaultTodayCard(
   variation: string | undefined,
 ): Record<string, unknown> {
@@ -332,82 +332,69 @@ function defaultTodayCard(
   if (v === 'quiz') {
     return {
       variation: 'quiz',
-      heading: 'Habit Everyday: Better Snack',
-      subheading: 'A quick quiz from Yamini to start your day.',
-      poster_label: 'Better Snack quiz',
+      quiz_ribbon: "Today's Quiz",
+      title: 'Daily Pose Quiz',
+      description: 'A short quiz from Saurabh. 10 seconds.',
       poster_image: '/today-template-refs/Habuild CRM Image (1).jpeg',
-      quiz_question: 'Why can makhana be a better snack than biscuits?',
+      quiz_question: 'Can you guess the above pose?',
       quiz_options: [
-        'It is lighter and less processed',
-        'It is always more expensive',
-        'It has more sugar',
+        'Adhomukha Svanasana',
+        'Eka Pada Rajakapotasana',
+        'Sukhasana',
       ],
       quiz_correct: 'A',
-      quiz_hint_enabled: true,
-      quiz_hint:
-        'Think about how the snack is made. Less processed = gentler on energy.',
-      quiz_correct_message:
-        'Correct. Makhana is roasted, light, and low on processing.',
-      quiz_wrong_message:
-        'Not quite. Makhana wins because it is lighter and less processed.',
-      cta: 'Share',
-      secondary_cta_text: "Take today's quiz",
-      secondary_cta_url: '/quiz',
-      toastOnCta: 'Opening WhatsApp share sheet',
-      toastOnSecondary: 'Opening the quiz screen',
+      quiz_hint: 'Think about the shape of the body in the photo.',
+      quiz_no_image: false,
+      quiz_show_completed_state: false,
+      quiz_show_wrong_state: false,
+      cta: 'Share this Quiz',
+      primary_cta_url: '',
     };
   }
 
   if (v === 'video') {
     return {
       variation: 'video',
-      heading: '15 lakh people started their health journey in 7 days',
-      subheading: 'Watch the story behind the community.',
-      poster_label: 'Story of Habuild',
+      video_theme: 'Meditation',
+      title: 'Thyroid Issues Video',
+      description: 'A short watch on what helps and what does not.',
       poster_image: '/today-template-refs/Habuild CRM Image (3).jpeg',
       video_url: 'https://youtube.com/shorts/example',
       video_duration: '3 min',
-      video_credit: 'News credit: The Better India',
-      eyebrow: 'Story of Habuild · 3 min',
-      cta: 'Watch',
-      secondary_cta_text: 'Join 21-Day Yoga',
-      secondary_cta_url: 'habit.yoga/anitarodrigues_ebi48',
-      toastOnCta: 'Opening video player',
-      toastOnSecondary: 'Opening the 21-Day Yoga signup',
+      video_credit: '',
+      cta: 'Watch Now',
+      primary_cta_url: '',
+      secondary_cta_text: 'Share Video',
+      secondary_cta_url: '',
     };
   }
 
   if (v === 'pdf') {
     return {
       variation: 'pdf',
-      heading: 'Surya Namaskar Recipe Booklet',
-      subheading: '10 nutrition recipes from Yamini. Save and cook all year.',
-      poster_label: 'Recipe Booklet PDF',
+      pdf_pages: '12 Pages PDF',
+      title: 'Health and wellness PDF',
+      description: '10 nutrition recipes from Yamini. Save and cook all year.',
       poster_image: '/today-template-refs/Habuild CRM Image (5).jpeg',
       pdf_url: 'https://habuild.in/booklets/surya-recipes.pdf',
-      pdf_pages: '12 pages',
       cta: 'Download PDF',
-      secondaryCta: 'Share PDF',
-      secondaryCtaUrl: '',
-      secondary_cta_text: '',
+      primary_cta_url: '',
+      secondary_cta_text: 'Share PDF',
       secondary_cta_url: '',
-      toastOnCta: 'Opening PDF download',
-      toastOnSecondary: 'Opening WhatsApp share sheet',
     };
   }
 
   // Poster (default)
   return {
     variation: 'poster',
-    heading: 'Health bhi rishton jaisi hai',
-    subheading: 'Care for it and it cares for you.',
-    poster_label: 'India Gate poster',
+    poster_edition: '13TH EDITION',
+    title: 'Health and wellness Poster',
+    description: 'A short note you can share with the family group.',
     poster_image: '/today-template-refs/Habuild CRM Image (8).jpeg',
-    cta: 'Share',
-    secondary_cta_text: 'Join 21-Day Yoga',
-    secondary_cta_url: 'habit.yoga/anitarodrigues_ebi48',
-    toastOnCta: 'Opening WhatsApp share sheet',
-    toastOnSecondary: 'Opening the 21-Day Yoga signup',
+    cta: 'Share Poster',
+    primary_cta_url: '',
+    secondary_cta_text: 'Download Poster',
+    secondary_cta_url: '',
   };
 }
 

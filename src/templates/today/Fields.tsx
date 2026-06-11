@@ -6,11 +6,12 @@ import type { FieldsProps } from '../types';
 import { asArray, asNumber, asString } from '../shared/cardParts';
 import groupStyles from '../shared/groupStyles.module.css';
 
-/* Today form fields. Mirrors buildTodayFields in 10-comms-cms.html.
-   Variation-aware: poster / quiz / video / pdf. Heading + subheading + image
-   are shared; the per-variation block adds quiz options, video meta, or PDF
-   meta. CTAs vary by variation (Watch is locked for video, Share is locked
-   for poster + quiz; PDF has its own dual-CTA layout). */
+/* Today form fields.
+   Variation-aware: poster / quiz / video / pdf. Per the 2026-06 design,
+   the title + description live on the card itself (not on a dark backdrop
+   above it). Each variation exposes a ribbon override, title, description,
+   image, primary CTA, and secondary CTA. Quiz also gets question, options,
+   correct answer, hint, and 3 preview-state toggles. */
 
 type Variation = 'poster' | 'quiz' | 'video' | 'pdf';
 
@@ -20,45 +21,78 @@ function readVariation(card: Record<string, unknown>, fallback?: string): Variat
   return 'poster';
 }
 
+function ribbonField(card: Record<string, unknown>, v: Variation) {
+  if (v === 'poster') {
+    return {
+      label: 'Edition (in ribbon)',
+      placeholder: '13TH EDITION',
+      value: asString(card.poster_edition) || '13TH EDITION',
+      hint: 'Shows in the ribbon as "Today\'s Poster · 13TH EDITION".',
+      key: 'poster_edition' as const,
+    };
+  }
+  if (v === 'pdf') {
+    return {
+      label: 'Ribbon label',
+      placeholder: '12 Pages PDF',
+      value: asString(card.pdf_pages) || '12 Pages PDF',
+      hint: 'Shown in the top ribbon. Usually the page count.',
+      key: 'pdf_pages' as const,
+    };
+  }
+  if (v === 'video') {
+    return {
+      label: 'Theme tag (in ribbon)',
+      placeholder: 'Meditation',
+      value: asString(card.video_theme) || 'Meditation',
+      hint: 'A short theme tag for the ribbon (Meditation, Pranayama, Recipes, etc).',
+      key: 'video_theme' as const,
+    };
+  }
+  return {
+    label: 'Ribbon label',
+    placeholder: "Today's Quiz",
+    value: asString(card.quiz_ribbon) || "Today's Quiz",
+    hint: 'Shown at the top of the quiz card.',
+    key: 'quiz_ribbon' as const,
+  };
+}
+
 export function TodayFields({ card, variation, onPatch }: FieldsProps) {
   const v = readVariation(card, variation);
-  const imageLabel =
-    v === 'video'
-      ? 'Video thumbnail'
-      : v === 'pdf'
-        ? 'Cover thumbnail'
-        : 'Poster image';
-  const imageHint =
-    v === 'video'
-      ? 'Thumbnail members see before tapping play. Recommended 1080 x 1350.'
-      : v === 'pdf'
-        ? 'Cover thumbnail. Recommended 1080 x 1350 (4:5).'
-        : 'Poster image. Recommended 1080 x 1350 (4:5).';
+  const ribbon = ribbonField(card, v);
 
   return (
     <>
-      <Group
-        title="Heading and subheading"
-        hint="Shown above the poster on the dark story background"
-      >
+      <Group title="Ribbon" hint="The small colored pill at the top of the card.">
         <TextField
-          label="Heading"
-          value={asString(card.heading)}
-          onChange={(v) => onPatch({ heading: v })}
-          placeholder="e.g. Habit Everyday · Better Breakfast"
-          helperText="Short title, 1 line. Keep it under 60 characters."
+          label={ribbon.label}
+          value={ribbon.value}
+          onChange={(next) => onPatch({ [ribbon.key]: next })}
+          placeholder={ribbon.placeholder}
+          helperText={ribbon.hint}
+        />
+      </Group>
+
+      <Group title="Title and description" hint="Shown on the card, below the image.">
+        <TextField
+          label="Title"
+          value={asString(card.title)}
+          onChange={(next) => onPatch({ title: next })}
+          placeholder={defaultTitlePlaceholder(v)}
+          helperText="Short title. Keep it under 60 characters."
         />
         <TextArea
-          label="Subheading"
-          value={asString(card.subheading)}
-          onChange={(v) => onPatch({ subheading: v })}
-          placeholder="A 1 to 2 line description that tees up the poster."
-          helperText="Members read this before the image loads. Keep it warm and clear."
+          label="Description"
+          value={asString(card.description)}
+          onChange={(next) => onPatch({ description: next })}
+          placeholder="1 to 2 line description."
+          helperText="Members read this under the title. Keep it warm and concise."
           rows={2}
         />
       </Group>
 
-      <Group title={imageLabel} hint={imageHint}>
+      <Group title={imageLabel(v)} hint={imageHint(v)}>
         <ImageUpload
           label="Image"
           value={asString(card.poster_image) || null}
@@ -85,86 +119,112 @@ export function TodayFields({ card, variation, onPatch }: FieldsProps) {
 
       {v === 'quiz' ? <QuizFields card={card} onPatch={onPatch} /> : null}
       {v === 'video' ? <VideoFields card={card} onPatch={onPatch} /> : null}
-      {v === 'pdf' ? <PdfFields card={card} onPatch={onPatch} /> : null}
 
-      {v === 'pdf' ? (
-        <Group
-          title="Primary and secondary CTAs"
-          hint="Members can download or share the PDF"
-        >
-          <div className={groupStyles.cols2}>
-            <TextField
-              label="Primary button label"
-              value={asString(card.cta) || 'Download PDF'}
-              onChange={(v) => onPatch({ cta: v })}
-              placeholder="Download PDF"
-            />
-            <TextField
-              label="Secondary button label"
-              value={asString(card.secondaryCta) || 'Share PDF'}
-              onChange={(v) => onPatch({ secondaryCta: v })}
-              placeholder="Share PDF"
-            />
-          </div>
+      <Group title="Primary CTA" hint="Full-width button at the bottom of the card.">
+        <div className={groupStyles.cols2}>
           <TextField
-            label="Secondary URL or deep link (optional)"
-            value={asString(card.secondaryCtaUrl)}
-            onChange={(v) => onPatch({ secondaryCtaUrl: v })}
-            placeholder="https://habuild.in/share/recipe-booklet"
-            helperText="Where the share button opens. Leave blank for the native share sheet."
+            label="Button label"
+            value={asString(card.cta) || defaultPrimary(v)}
+            onChange={(next) => onPatch({ cta: next })}
+            placeholder={defaultPrimary(v)}
           />
-        </Group>
-      ) : (
-        <Group title="Secondary CTA" hint="Where the secondary button takes members">
+          <TextField
+            label="URL or deep link"
+            value={asString(card.primary_cta_url)}
+            onChange={(next) => onPatch({ primary_cta_url: next })}
+            placeholder={defaultPrimaryUrl(v)}
+          />
+        </div>
+      </Group>
+
+      {v !== 'quiz' ? (
+        <Group title="Secondary CTA" hint="Small text link with chevron, above the primary button.">
           <div className={groupStyles.cols2}>
             <TextField
-              label="Button label"
-              value={asString(card.secondary_cta_text)}
-              onChange={(v) => onPatch({ secondary_cta_text: v })}
-              placeholder="Take today's quiz / Open recipe / Watch full video"
+              label="Link label"
+              value={asString(card.secondary_cta_text) || defaultSecondary(v)}
+              onChange={(next) => onPatch({ secondary_cta_text: next })}
+              placeholder={defaultSecondary(v)}
             />
             <TextField
               label="URL or deep link"
               value={asString(card.secondary_cta_url)}
-              onChange={(v) => onPatch({ secondary_cta_url: v })}
-              placeholder="/quiz or me.habuild.in/recipes/cheela"
+              onChange={(next) => onPatch({ secondary_cta_url: next })}
+              placeholder={defaultSecondaryUrl(v)}
             />
           </div>
-          <div style={lockedRowStyle}>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
-              <path
-                d="M11 7V5a3 3 0 0 0-6 0v2M4 7h8v6H4z"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span>
-              Primary CTA: <b>{v === 'video' ? 'Watch' : 'Share'}</b>{' '}
-              {v === 'video'
-                ? '(plays the video inline)'
-                : '(uses native share sheet)'}{' '}
-              · not editable
-            </span>
-          </div>
         </Group>
-      )}
+      ) : null}
     </>
   );
 }
 
-const lockedRowStyle: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: 8,
-  marginTop: 8,
-  padding: '8px 10px',
-  background: 'var(--p-stat-bg, #f1f5f9)',
-  borderRadius: 6,
-  fontSize: 11.5,
-  color: 'var(--text-2)',
-};
+function defaultTitlePlaceholder(v: Variation): string {
+  if (v === 'video') return 'Thyroid Issues Video';
+  if (v === 'pdf') return 'Health and wellness PDF';
+  if (v === 'quiz') return 'Can you guess the above pose?';
+  return 'Health and wellness Poster';
+}
+
+function imageLabel(v: Variation): string {
+  if (v === 'video') return 'Video thumbnail';
+  if (v === 'pdf') return 'Cover thumbnail';
+  if (v === 'quiz') return 'Instructor image';
+  return 'Poster image';
+}
+
+function imageHint(v: Variation): string {
+  if (v === 'video') return 'Thumbnail members see before tapping play. Recommended 1080 x 1350.';
+  if (v === 'pdf') return 'Cover thumbnail. Recommended 1080 x 1350 (4:5).';
+  if (v === 'quiz') return 'Background image (usually the instructor). Optional. Hide with the no-image toggle.';
+  return 'Poster image. Recommended 1080 x 1350 (4:5).';
+}
+
+function defaultPrimary(v: Variation): string {
+  if (v === 'video') return 'Watch Now';
+  if (v === 'pdf') return 'Download PDF';
+  if (v === 'quiz') return 'Share this Quiz';
+  return 'Share Poster';
+}
+
+function defaultPrimaryUrl(v: Variation): string {
+  if (v === 'video') return 'https://youtube.com/shorts/...';
+  if (v === 'pdf') return 'https://habuild.in/booklets/...';
+  if (v === 'quiz') return '';
+  return '';
+}
+
+function defaultSecondary(v: Variation): string {
+  if (v === 'video') return 'Share Video';
+  if (v === 'pdf') return 'Share PDF';
+  return 'Download Poster';
+}
+
+function defaultSecondaryUrl(v: Variation): string {
+  if (v === 'video') return '';
+  if (v === 'pdf') return '';
+  return '';
+}
+
+function Group({
+  title,
+  hint,
+  children,
+}: {
+  title: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className={groupStyles.group}>
+      <div className={groupStyles.head}>
+        <div className={groupStyles.title}>{title}</div>
+        {hint ? <div className={groupStyles.hint}>{hint}</div> : null}
+      </div>
+      <div className={groupStyles.body}>{children}</div>
+    </div>
+  );
+}
 
 function QuizFields({
   card,
@@ -173,9 +233,11 @@ function QuizFields({
   card: Record<string, unknown>;
   onPatch: (patch: Record<string, unknown>) => void;
 }) {
-  const options = asArray<string>(card.quiz_options).map((o) => asString(o));
+  const options = asArray<unknown>(card.quiz_options).map((o) => asString(o));
   const correct = asString(card.quiz_correct) || 'A';
-  const hintEnabled = card.quiz_hint_enabled === true;
+  const showCompleted = card.quiz_show_completed_state === true;
+  const showWrong = card.quiz_show_wrong_state === true;
+  const noImage = card.quiz_no_image === true;
 
   const updateOption = (idx: number, next: string) => {
     const copy = options.slice();
@@ -199,113 +261,101 @@ function QuizFields({
   };
 
   const correctOptions = ['A', 'B', 'C', 'D']
-    .slice(0, options.length)
+    .slice(0, Math.max(options.length, 1))
     .map((L) => ({ value: L, label: L }));
 
   return (
-    <Group title="Quiz" hint="Question, options, correct answer">
-      <TextField
-        label="Question"
-        value={asString(card.quiz_question)}
-        onChange={(v) => onPatch({ quiz_question: v })}
-        placeholder="e.g. Why are sprouts often added to meals?"
-        helperText="Often the same as the subheading. Edit if you want a tighter question."
-      />
-      <div style={{ display: 'grid', gap: 6 }}>
-        <div style={{ fontSize: 11.5, fontWeight: 600, color: 'var(--text-2)' }}>
-          Options
-        </div>
-        {options.map((opt, idx) => {
-          const letter = String.fromCharCode(65 + idx);
-          return (
-            <div
-              key={idx}
-              style={{ display: 'flex', gap: 6, alignItems: 'center' }}
-            >
-              <input
-                type="text"
-                value={opt}
-                onChange={(e) => updateOption(idx, e.target.value)}
-                placeholder={`Option ${letter}`}
-                style={{
-                  flex: 1,
-                  height: 32,
-                  padding: '0 10px',
-                  border: '1px solid var(--border)',
-                  borderRadius: 6,
-                  fontSize: 12.5,
-                  fontFamily: 'inherit',
-                  background: '#fff',
-                }}
-              />
-              {options.length > 2 ? (
-                <button
-                  type="button"
-                  onClick={() => removeOption(idx)}
-                  aria-label={`Remove option ${letter}`}
-                  style={{
-                    border: '1px solid var(--border)',
-                    background: '#fff',
-                    width: 28,
-                    height: 28,
-                    borderRadius: 6,
-                    cursor: 'pointer',
-                    color: 'var(--text-3)',
-                  }}
-                >
-                  ×
-                </button>
-              ) : null}
-            </div>
-          );
-        })}
-        {options.length < 4 ? (
-          <button
-            type="button"
-            onClick={addOption}
-            style={{
-              padding: '6px 10px',
-              border: '1px dashed var(--border)',
-              background: '#fff',
-              borderRadius: 6,
-              cursor: 'pointer',
-              color: 'var(--text-2)',
-              fontSize: 11.5,
-              alignSelf: 'start',
-              fontFamily: 'inherit',
-            }}
-          >
-            + Add another option
-          </button>
-        ) : null}
-      </div>
-      <div className={groupStyles.cols2}>
-        <SelectField
-          label="Correct answer"
-          value={correct}
-          onChange={(v) => onPatch({ quiz_correct: v })}
-          options={correctOptions}
+    <>
+      <Group title="Quiz" hint="Question, options, correct answer, hint.">
+        <TextField
+          label="Question"
+          value={asString(card.quiz_question)}
+          onChange={(next) => onPatch({ quiz_question: next })}
+          placeholder="e.g. Can you guess the above pose?"
         />
-        <label
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-            fontSize: 12,
-            color: 'var(--text-2)',
-            cursor: 'pointer',
-            paddingTop: 22,
-          }}
-        >
+        <div style={{ display: 'grid', gap: 6 }}>
+          <div style={{ fontSize: 11.5, fontWeight: 600, color: 'var(--text-2)' }}>
+            Options
+          </div>
+          {options.map((opt, idx) => {
+            const letter = String.fromCharCode(65 + idx);
+            return (
+              <div key={idx} style={optionRowStyle}>
+                <input
+                  type="text"
+                  value={opt}
+                  onChange={(e) => updateOption(idx, e.target.value)}
+                  placeholder={`Option ${letter}`}
+                  style={optionInputStyle}
+                />
+                {options.length > 2 ? (
+                  <button
+                    type="button"
+                    onClick={() => removeOption(idx)}
+                    aria-label={`Remove option ${letter}`}
+                    style={removeBtnStyle}
+                  >
+                    x
+                  </button>
+                ) : null}
+              </div>
+            );
+          })}
+          {options.length < 4 ? (
+            <button type="button" onClick={addOption} style={addBtnStyle}>
+              + Add another option
+            </button>
+          ) : null}
+        </div>
+        <div className={groupStyles.cols2}>
+          <SelectField
+            label="Correct answer"
+            value={correct}
+            onChange={(next) => onPatch({ quiz_correct: next })}
+            options={correctOptions}
+          />
+          <TextField
+            label="Hint text (optional)"
+            value={asString(card.quiz_hint)}
+            onChange={(next) => onPatch({ quiz_hint: next })}
+            placeholder="A gentle nudge for the wrong-answer state."
+          />
+        </div>
+      </Group>
+
+      <Group title="Quiz layout and preview states" hint="Toggles only affect the preview.">
+        <label style={toggleRowStyle}>
           <input
             type="checkbox"
-            checked={hintEnabled}
-            onChange={(e) => onPatch({ quiz_hint_enabled: e.target.checked })}
+            checked={noImage}
+            onChange={(e) => onPatch({ quiz_no_image: e.target.checked })}
           />
-          Show "reply HINT for a gentle clue"
+          <span>No instructor image (centered question card)</span>
         </label>
-      </div>
-    </Group>
+        <label style={toggleRowStyle}>
+          <input
+            type="checkbox"
+            checked={showCompleted}
+            onChange={(e) => onPatch({
+              quiz_show_completed_state: e.target.checked,
+              quiz_show_wrong_state: e.target.checked ? false : showWrong,
+            })}
+          />
+          <span>Preview "completed" state (2nd open, answered correctly)</span>
+        </label>
+        <label style={toggleRowStyle}>
+          <input
+            type="checkbox"
+            checked={showWrong}
+            onChange={(e) => onPatch({
+              quiz_show_wrong_state: e.target.checked,
+              quiz_show_completed_state: e.target.checked ? false : showCompleted,
+            })}
+          />
+          <span>Preview "wrong answer" state (2nd open, missed it)</span>
+        </label>
+      </Group>
+    </>
   );
 }
 
@@ -317,27 +367,24 @@ function VideoFields({
   onPatch: (patch: Record<string, unknown>) => void;
 }) {
   return (
-    <Group
-      title="Video"
-      hint="YouTube or Shorts URL, duration, optional credit"
-    >
+    <Group title="Video" hint="YouTube or Shorts URL, optional duration and credit.">
       <TextField
         label="Video URL"
         value={asString(card.video_url)}
-        onChange={(v) => onPatch({ video_url: v })}
+        onChange={(next) => onPatch({ video_url: next })}
         placeholder="https://youtube.com/shorts/..."
       />
       <div className={groupStyles.cols2}>
         <TextField
-          label="Duration"
+          label="Duration (optional)"
           value={asString(card.video_duration)}
-          onChange={(v) => onPatch({ video_duration: v })}
+          onChange={(next) => onPatch({ video_duration: next })}
           placeholder="e.g. 3 min"
         />
         <TextField
           label="Credit (optional)"
           value={asString(card.video_credit)}
-          onChange={(v) => onPatch({ video_credit: v })}
+          onChange={(next) => onPatch({ video_credit: next })}
           placeholder="e.g. News credit: The Better India"
         />
       </div>
@@ -345,49 +392,51 @@ function VideoFields({
   );
 }
 
-function PdfFields({
-  card,
-  onPatch,
-}: {
-  card: Record<string, unknown>;
-  onPatch: (patch: Record<string, unknown>) => void;
-}) {
-  return (
-    <Group title="PDF" hint="Direct PDF link and size or page count">
-      <TextField
-        label="PDF URL"
-        value={asString(card.pdf_url)}
-        onChange={(v) => onPatch({ pdf_url: v })}
-        placeholder="https://habuild.in/assets/recipe-booklet.pdf"
-        helperText="Direct link to the downloadable PDF."
-      />
-      <TextField
-        label="Pages or size"
-        value={asString(card.pdf_pages)}
-        onChange={(v) => onPatch({ pdf_pages: v })}
-        placeholder='e.g. 12 pages or 2.4 MB'
-        helperText='Shown as a small badge on the cover. Either "12 pages" or "2.4 MB" works.'
-      />
-    </Group>
-  );
-}
+const optionRowStyle: React.CSSProperties = {
+  display: 'flex',
+  gap: 6,
+  alignItems: 'center',
+};
 
-function Group({
-  title,
-  hint,
-  children,
-}: {
-  title: string;
-  hint?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className={groupStyles.group}>
-      <div className={groupStyles.head}>
-        <div className={groupStyles.title}>{title}</div>
-        {hint ? <div className={groupStyles.hint}>{hint}</div> : null}
-      </div>
-      <div className={groupStyles.body}>{children}</div>
-    </div>
-  );
-}
+const optionInputStyle: React.CSSProperties = {
+  flex: 1,
+  height: 32,
+  padding: '0 10px',
+  border: '1px solid var(--border)',
+  borderRadius: 6,
+  fontSize: 12.5,
+  fontFamily: 'inherit',
+  background: '#fff',
+};
+
+const removeBtnStyle: React.CSSProperties = {
+  border: '1px solid var(--border)',
+  background: '#fff',
+  width: 28,
+  height: 28,
+  borderRadius: 6,
+  cursor: 'pointer',
+  color: 'var(--text-3)',
+};
+
+const addBtnStyle: React.CSSProperties = {
+  padding: '6px 10px',
+  border: '1px dashed var(--border)',
+  background: '#fff',
+  borderRadius: 6,
+  cursor: 'pointer',
+  color: 'var(--text-2)',
+  fontSize: 11.5,
+  alignSelf: 'start',
+  fontFamily: 'inherit',
+};
+
+const toggleRowStyle: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
+  fontSize: 12,
+  color: 'var(--text-2)',
+  cursor: 'pointer',
+  padding: '4px 0',
+};
