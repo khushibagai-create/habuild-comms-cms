@@ -1,0 +1,231 @@
+/* Mirrors .form-screen / .form-col / .preview-col in 10-comms-cms.html.
+   Two-column split: form on the left, sticky preview on the right. */
+
+.editor {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 24px;
+  align-items: start;
+}
+
+.formCol {
+  background: #f5f7fb;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Editor header — sits at the top of the form column. */
+.header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.headerTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  color: var(--text-2);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.backLink:hover {
+  background: var(--bg-muted);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.tplPill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: var(--violet-soft);
+  color: var(--violet);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.tplName {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.headerActions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-2);
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.btn:hover {
+  background: var(--bg-muted);
+  border-color: var(--border-strong);
+}
+
+.btnPrimary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent-2);
+}
+
+.btnPrimary:hover {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+}
+
+/* Variation segmented toggle — mirrors .vt-segmented in source HTML. */
+.variation {
+  display: inline-flex;
+  background: var(--bg-muted);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.vTab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-2);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, box-shadow 0.12s;
+  text-transform: capitalize;
+}
+
+.vTab:hover {
+  color: var(--text);
+}
+
+.vTabActive {
+  background: #ffffff;
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+.variationLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  align-self: center;
+  margin-right: 4px;
+}
+
+.variationRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Footer with Save / Publish actions. */
+.formFooter {
+  position: sticky;
+  bottom: 0;
+  background: #ffffff;
+  border-top: 1px solid var(--border);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 5;
+}
+
+.statusDot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-3);
+  margin-right: auto;
+}
+
+.statusDotInner {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+/* Preview column — sticky pinned to top of viewport on scroll. */
+.previewCol {
+  position: sticky;
+  top: 76px;
+}
+
+.previewShell {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.previewHead {
+  padding: 10px 14px;
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.previewTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.previewSub {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-left: auto;
+}

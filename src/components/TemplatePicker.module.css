@@ -1,0 +1,151 @@
+/* Mirrors the .tpl-grid / .tpl-card markup in 10-comms-cms.html.
+   In the React port the picker renders inline in the main pane
+   instead of inside a modal — so we wrap it in a card surface. */
+
+.wrap {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  max-width: 1080px;
+}
+
+.header {
+  margin-bottom: var(--space-5);
+}
+
+.title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.005em;
+}
+
+.sub {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--text-3);
+  line-height: 1.5;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  background: var(--bg);
+  cursor: pointer;
+  transition: border-color 0.12s, box-shadow 0.12s, transform 0.12s;
+  text-align: left;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.cardPinned {
+  border-color: #f5d38a;
+  background: linear-gradient(180deg, #fffbeb 0%, #ffffff 60%);
+  box-shadow: 0 0 0 1px #fce7a1 inset;
+}
+
+.cardPinned:hover {
+  border-color: #d97706;
+  box-shadow: 0 0 0 3px #fef3c7;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  color: #fff;
+}
+
+.icon svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.8;
+}
+
+.name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.desc {
+  font-size: 12px;
+  color: var(--text-3);
+  line-height: 1.45;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--text-4);
+  padding-top: 10px;
+  margin-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.cta {
+  color: var(--accent-2);
+  font-weight: 500;
+}
+
+.count {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-muted);
+  color: var(--text-2);
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-left: auto;
+}
+
+.countPinned {
+  background: #fef3c7;
+  color: #9a6009;
+  border: 1px solid #fce7a1;
+}
+
+/* Icon gradient variants — mirror tpl-1…tpl-8 in source HTML. */
+.tpl1 { background: linear-gradient(135deg, #38bdf8, #0284c7); }
+.tpl2 { background: linear-gradient(135deg, #34d399, #059669); }
+.tpl3 { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
+.tpl4 { background: linear-gradient(135deg, #fbbf24, #d97706); }
+.tpl5 { background: linear-gradient(135deg, #f472b6, #db2777); }
+.tpl6 { background: linear-gradient(135deg, #94a3b8, #475569); }
+.tpl8 { background: linear-gradient(135deg, #f59e0b, #9a6009); }

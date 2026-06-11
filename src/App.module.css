@@ -1,0 +1,103 @@
+/* Mirrors .app / .main / .content in 10-comms-cms.html. */
+
+.app {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.content {
+  padding: var(--space-6) var(--space-8) 60px;
+  max-width: 1440px;
+  width: 100%;
+}
+
+/* Shared button styles for the topbar action slot and empty-state CTA.
+   Mirrors .btn / .btn-primary in source HTML. Kept local to App so the
+   layout components don't depend on a shared button styleseet yet. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-2);
+  font-family: inherit;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.btn:hover {
+  background: var(--bg-muted);
+  border-color: var(--border-strong);
+}
+
+.btnPrimary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent-2);
+}
+
+.btnPrimary:hover {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+}
+
+/* Empty state for the stories list placeholder. */
+.empty {
+  background: var(--bg);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: var(--space-10) var(--space-8);
+  text-align: center;
+  max-width: 640px;
+  margin: var(--space-6) auto 0;
+}
+
+.emptyTitle {
+  margin: 0 0 var(--space-2);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.emptyBody {
+  margin: 0 0 var(--space-5);
+  font-size: 13px;
+  color: var(--text-3);
+  line-height: 1.6;
+}
+
+/* Generic placeholder card used by editor / events / templates-ref views. */
+.placeholderCard {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-sm);
+  max-width: 640px;
+}
+
+.h1 {
+  margin: 0 0 var(--space-3) 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.p {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 13px;
+  line-height: 1.6;
+}

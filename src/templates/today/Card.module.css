@@ -1,0 +1,322 @@
+/* Today template card. Mirrors .today-* in 10-comms-cms.html.
+   CTA colors locked at #0C4A6E. This component renders the inner story —
+   the parent CardStack wraps it in the usual story shell. */
+
+.story {
+  background: #1a1a1d;
+  padding: 14px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  font-family: 'Inter', system-ui, sans-serif;
+  border-radius: inherit;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.textBlock {
+  padding: 0 6px 10px;
+  color: #f8fafc;
+}
+
+.heading {
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #ffffff;
+  margin-bottom: 4px;
+  letter-spacing: -0.005em;
+}
+
+.sub {
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: #cbd5e1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.35),
+    0 2px 6px rgba(0, 0, 0, 0.15);
+  min-height: 0;
+}
+
+.poster {
+  flex: 1;
+  position: relative;
+  background: linear-gradient(160deg, #fbbf24 0%, #f59e0b 40%, #9a6009 100%);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.poster::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(2px 2px at 22% 18%, rgba(255, 255, 255, 0.55), transparent 60%),
+    radial-gradient(2px 2px at 78% 32%, rgba(255, 255, 255, 0.35), transparent 60%),
+    radial-gradient(2px 2px at 42% 78%, rgba(255, 255, 255, 0.4), transparent 60%);
+  pointer-events: none;
+}
+
+.posterHasImg {
+  background: #0f172a;
+}
+
+.posterHasImg::before {
+  display: none;
+}
+
+.posterImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 0;
+}
+
+.posterPlaceholder {
+  font-size: 28px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 3px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  position: relative;
+  z-index: 1;
+}
+
+/* Video: dark scrim over real image so the play circle reads cleanly */
+.posterVideo.posterHasImg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.3) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.playOverlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.playCircle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.playCircle svg {
+  width: 22px;
+  height: 22px;
+  fill: #0f172a;
+  margin-left: 3px;
+}
+
+.videoDurationPill {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  background: rgba(15, 23, 42, 0.85);
+  color: #ffffff;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 999px;
+  z-index: 3;
+  letter-spacing: 0.3px;
+  backdrop-filter: blur(4px);
+}
+
+.videoCredit {
+  font-size: 10.5px;
+  color: #64748b;
+  padding: 8px 14px 0;
+  background: #ffffff;
+  text-align: center;
+  font-style: italic;
+}
+
+.pdfBadge {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: rgba(15, 23, 42, 0.88);
+  color: #ffffff;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 999px;
+  z-index: 3;
+  letter-spacing: 0.3px;
+  backdrop-filter: blur(4px);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pdfBadge svg {
+  width: 11px;
+  height: 11px;
+  stroke: #ffffff;
+}
+
+/* Quiz block */
+.quizBlock {
+  padding: 10px 12px 6px;
+  background: #ffffff;
+  border-top: 1px solid #eef2f7;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.quizQuestion {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  background: #e0f2fe;
+  color: #075985;
+  font-size: 11.5px;
+  font-weight: 600;
+  border-radius: 999px;
+  line-height: 1.3;
+  align-self: flex-start;
+  max-width: 100%;
+}
+
+.quizOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.quizOpt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #0f172a;
+  background: #ffffff;
+}
+
+.optLetter {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--p-cta, #0c4a6e);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+
+/* Foot: Share / Watch / Download primary + optional secondary */
+.foot {
+  padding: 12px 14px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #ffffff;
+  border-top: 1px solid #eef2f7;
+}
+
+.shareBtn {
+  width: 100%;
+  height: 44px;
+  background: var(--p-cta, #0c4a6e);
+  color: #ffffff;
+  border: 0;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-family: inherit;
+}
+
+.shareBtn:hover {
+  filter: brightness(0.95);
+}
+
+.shareBtnWatch {
+  background: var(--p-cta, #0c4a6e);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.shareBtnDownload {
+  background: var(--p-cta, #0c4a6e);
+}
+
+.secondaryBtn {
+  width: 100%;
+  height: 40px;
+  background: #ffffff;
+  color: var(--p-cta, #0c4a6e);
+  border: 1.5px solid #cbd5e1;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.secondaryBtn:hover {
+  background: #f8fafc;
+  border-color: var(--p-cta, #0c4a6e);
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 14px 4px;
+  background: #ffffff;
+}
+
+.dot {
+  width: 18px;
+  height: 4px;
+  border-radius: 2px;
+  background: #cbd5e1;
+}
+
+.dotActive {
+  background: var(--p-cta, #0c4a6e);
+}

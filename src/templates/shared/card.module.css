@@ -1,0 +1,355 @@
+/* Shared card-stack visual primitives extracted from 10-comms-cms.html.
+   These classnames mirror the source markup (.pcard-*, .info-pill,
+   .meta-row, .focus-block, .timeline, .eh-*) one-for-one so the per-
+   template Card components can stay clean. Palette tokens are applied
+   on the PhoneFrame wrapper. */
+
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 160px;
+  background: linear-gradient(180deg, var(--p-gradient-top) 0%, rgba(255, 255, 255, 0.4) 60%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  padding: 16px 16px 10px;
+}
+
+.infoPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--p-dark);
+  color: var(--p-pill-text);
+  padding: 5px 10px 5px 8px;
+  border-radius: 999px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.infoPill::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ef4444;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--p-dark);
+  line-height: 1.15;
+  margin-top: 10px;
+  letter-spacing: -0.3px;
+}
+
+.sub {
+  font-size: 12px;
+  font-weight: 400;
+  color: #64748b;
+  line-height: 1.42;
+  margin-top: 6px;
+}
+
+/* Hero image — palette-tinted placeholder with stripes, or rendered <img>. */
+.image {
+  margin: 12px 0 0;
+  width: 100%;
+  height: 130px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: repeating-linear-gradient(45deg, #cbd5e1, #cbd5e1 8px, #e2e8f0 8px, #e2e8f0 16px);
+  display: grid;
+  place-items: center;
+  color: rgba(15, 23, 42, 0.4);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.imageHeroTop {
+  margin: 0;
+  border-radius: 0;
+  height: 150px;
+}
+
+.imageWrap {
+  position: relative;
+}
+
+.imageWrap > .infoPill {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+}
+
+/* Expert row — bigger avatar + uppercase name (Program Announcement, Daily
+   Session, Recording all share this pattern). */
+.expertRow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.expertAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--p-mid), var(--p-cta));
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex: none;
+  letter-spacing: 0.2px;
+}
+
+.expertName {
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.startsLine {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.startsLabel {
+  color: var(--p-cta);
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.seePlan {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--p-cta);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Meta row — 3-column stats strip, palette-tinted. */
+.metaRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin-top: 14px;
+  background: var(--p-stat-bg);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--p-mid) 18%, white);
+}
+
+.metaCell {
+  padding: 10px 4px;
+  text-align: center;
+  border-right: 1px solid color-mix(in srgb, var(--p-mid) 18%, white);
+}
+
+.metaCell:last-child {
+  border-right: 0;
+}
+
+.metaVal {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.1px;
+}
+
+.metaLbl {
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-top: 3px;
+}
+
+/* Focus block — shared optional bullet list (Program Announcement hero,
+   Daily Session Story 1, Recording). Hidden when title + bullets are empty. */
+.focusBlock {
+  margin-top: 14px;
+}
+
+.focusTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 8px;
+  letter-spacing: -0.1px;
+}
+
+.focusBullets {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.focusBullets li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12.5px;
+  color: #475569;
+  line-height: 1.4;
+}
+
+.focusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--p-cta);
+  flex: none;
+  margin-top: 7px;
+}
+
+/* Numbered timeline — Multi-day Story 2, More-details, Daily Session
+   Story 2, Tools Story 2. */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  margin-top: 14px;
+  position: relative;
+}
+
+.timelineRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 10px 8px 0;
+  position: relative;
+}
+
+.tlCircle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--p-mid);
+  background: #ffffff;
+  color: var(--p-mid);
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex: none;
+  z-index: 1;
+  position: relative;
+}
+
+.tlText {
+  flex: 1;
+  padding-top: 4px;
+  min-width: 0;
+}
+
+.tlTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tlSub {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 16px;
+  top: 14px;
+  bottom: 14px;
+  width: 1.5px;
+  background: color-mix(in srgb, var(--p-mid) 35%, white);
+  z-index: 0;
+}
+
+/* Footer (CTA strip). */
+.foot {
+  padding: 12px 16px 14px;
+  background: #ffffff;
+  border-top: 1px solid #f1f5f9;
+  flex-shrink: 0;
+}
+
+.cta {
+  width: 100%;
+  height: 46px;
+  background: var(--p-cta);
+  color: var(--p-cta-text);
+  border: 0;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.2px;
+  transition: filter 0.15s;
+}
+
+.cta:hover {
+  filter: brightness(0.92);
+}
+
+.cta2 {
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #475569;
+  font-weight: 600;
+  background: transparent;
+  border: 0;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.cta2:hover {
+  color: var(--p-cta);
+}

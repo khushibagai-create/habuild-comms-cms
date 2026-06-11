@@ -1,0 +1,153 @@
+/* Mirrors the .form-col / #formFields stack in 10-comms-cms.html.
+   Vertical stack of: settings section, card editors, +add-card button. */
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+.settings {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  padding: 16px 24px 20px;
+  display: grid;
+  gap: 14px;
+}
+
+.settingsHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.settingsBadge {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex: none;
+}
+
+.settingsTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.settingsHint {
+  font-size: 11.5px;
+  color: var(--text-3);
+  margin-left: auto;
+}
+
+.fieldRow {
+  display: grid;
+  gap: 12px;
+}
+
+.cols2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.cols3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.switchRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.switchLabel {
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+
+/* iOS-style switch — mirrors .switch in source HTML. */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 18px;
+  flex: none;
+}
+
+.switch input {
+  display: none;
+}
+
+.switchSlot {
+  position: absolute;
+  inset: 0;
+  background: var(--border-strong);
+  border-radius: 9px;
+  transition: background 0.12s;
+}
+
+.switchSlot::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.12s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.switch input:checked + .switchSlot {
+  background: var(--accent);
+}
+
+.switch input:checked + .switchSlot::after {
+  transform: translateX(14px);
+}
+
+.cardsHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.cardsHeaderTitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.addCardBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--accent-2);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px dashed var(--border-strong);
+  background: transparent;
+  width: 100%;
+}
+
+.addCardBtn:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}

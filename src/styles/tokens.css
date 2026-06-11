@@ -1,0 +1,149 @@
+/* ============================================================
+   Design tokens
+   Extracted from prototypes/comms-in-app/10-comms-cms.html.
+   - CMS shell tokens (Linear / Notion / Retool aesthetic)
+   - Member-facing card palette tokens (Manish's Figma)
+   ============================================================ */
+
+:root {
+  /* Surface + slate scale */
+  --bg:            #FFFFFF;
+  --bg-subtle:     #F8FAFC;
+  --bg-muted:      #F1F5F9;
+  --border:        #E2E8F0;
+  --border-strong: #CBD5E1;
+  --text:          #0F172A;
+  --text-2:        #334155;
+  --text-3:        #64748B;
+  --text-4:        #94A3B8;
+
+  /* CMS accent (slate blue / sky) */
+  --accent:        #0EA5E9;
+  --accent-2:      #0284C7;
+  --accent-soft:   #E0F2FE;
+
+  /* Semantic */
+  --success:       #16A34A;
+  --success-soft:  #DCFCE7;
+  --warning:       #D97706;
+  --warning-soft:  #FEF3C7;
+  --danger:        #DC2626;
+  --danger-soft:   #FEE2E2;
+  --violet:        #7C3AED;
+  --violet-soft:   #EDE9FE;
+
+  /* Member-facing card defaults (Blue palette, see [data-palette] below) */
+  --card-pill:      #1F2937;
+  --card-pill-dot:  #EF4444;
+  --card-title:     #0F172A;
+  --card-sub:       #64748B;
+  --card-cta:       #0C4A6E;
+  --card-cta-2:     #0E5A8A;
+  --card-blue:      #0369A1;
+  --card-blue-soft: #E0F2FE;
+  --card-blue-line: #7DD3FC;
+  --card-gold:      #C99846;
+  --card-gold-soft: #FDF6E3;
+
+  /* Palette tokens (default = Blue). Overridden per-story via
+     [data-palette="..."] on the .phone container or any subtree. */
+  --p-cta:          #0A6598;
+  --p-dark:         #0369A1;
+  --p-mid:          #0281CA;
+  --p-light:        #1C7BB0;
+  --p-gradient-top: #E0F2FE;
+  --p-stat-bg:      #EFF6FF;
+  --p-today-pill:   #0A6598;
+  --p-pill-text:    #FFFFFF;
+  --p-cta-text:     #FFFFFF;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 1px rgba(15, 23, 42, 0.03);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06), 0 2px 4px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12), 0 4px 8px rgba(15, 23, 42, 0.06);
+
+  /* Radii */
+  --radius:    6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Spacing scale (CMS body uses 4-px grid) */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Type */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+/* ============================================================
+   Palette overrides — applied to any subtree (typically .phone)
+   with [data-palette="blue|purple|green|coral|gold"].
+   Matches the inline-style strategy in the source HTML.
+   ============================================================ */
+
+[data-palette='blue'] {
+  --p-cta:          #0A6598;
+  --p-dark:         #0369A1;
+  --p-mid:          #0281CA;
+  --p-light:        #1C7BB0;
+  --p-gradient-top: #E0F2FE;
+  --p-stat-bg:      #EFF6FF;
+  --p-today-pill:   #0A6598;
+  --p-pill-text:    #FFFFFF;
+  --p-cta-text:     #FFFFFF;
+}
+
+[data-palette='purple'] {
+  --p-cta:          #A23AAD;
+  --p-dark:         #692770;
+  --p-mid:          #87458E;
+  --p-light:        #B977C0;
+  --p-gradient-top: #F3E8FF;
+  --p-stat-bg:      #FAF5FF;
+  --p-today-pill:   #A23AAD;
+  --p-pill-text:    #FFFFFF;
+  --p-cta-text:     #FFFFFF;
+}
+
+[data-palette='green'] {
+  --p-cta:          #5EA123;
+  --p-dark:         #3E5F20;
+  --p-mid:          #608043;
+  --p-light:        #86A85F;
+  --p-gradient-top: #ECFDF5;
+  --p-stat-bg:      #F0FDF4;
+  --p-today-pill:   #5EA123;
+  --p-pill-text:    #FFFFFF;
+  --p-cta-text:     #FFFFFF;
+}
+
+[data-palette='coral'] {
+  --p-cta:          #FF5269;
+  --p-dark:         #952837;
+  --p-mid:          #997C7F;
+  --p-light:        #FBA5AF;
+  --p-gradient-top: #FFE4E6;
+  --p-stat-bg:      #FFF1F2;
+  --p-today-pill:   #FF5269;
+  --p-pill-text:    #FFFFFF;
+  --p-cta-text:     #FFFFFF;
+}
+
+[data-palette='gold'] {
+  --p-cta:          #9A6009;
+  --p-dark:         #6E4506;
+  --p-mid:          #8A6A35;
+  --p-light:        #C99D60;
+  --p-gradient-top: #FEF8EE;
+  --p-stat-bg:      #FAF3E5;
+  --p-today-pill:   #9A6009;
+  --p-pill-text:    #FFFFFF;
+  --p-cta-text:     #FFFFFF;
+}

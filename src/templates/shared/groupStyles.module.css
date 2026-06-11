@@ -1,0 +1,44 @@
+/* Shared form-group wrapper styles for per-template field components.
+   Mirrors the .section-inner block used inside each CardEditor — adds
+   a thin separator-style header above each group of related fields. */
+
+.group {
+  display: grid;
+  gap: 10px;
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.hint {
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+.body {
+  display: grid;
+  gap: 10px;
+}
+
+.cols2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.cols3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}

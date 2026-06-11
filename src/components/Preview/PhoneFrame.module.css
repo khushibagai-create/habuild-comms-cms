@@ -1,0 +1,35 @@
+/* Mirrors .device-frame + .phone in 10-comms-cms.html.
+   The phone is a 320×620 fixed-size container with a dark grey backdrop
+   and rounded corners. A simulated notch / dynamic island sits at the top. */
+
+.deviceFrame {
+  background: #4a4f58;
+  padding: 20px 20px 16px;
+  display: grid;
+  place-items: center;
+}
+
+.phone {
+  width: 320px;
+  height: 620px;
+  background: #4a4f58;
+  border-radius: 28px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Dynamic island — small black pill near the top, hidden behind story
+   header to mimic iPhone safe area. */
+.island {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 96px;
+  height: 24px;
+  border-radius: 12px;
+  background: #0a0a0a;
+  z-index: 30;
+  pointer-events: none;
+}

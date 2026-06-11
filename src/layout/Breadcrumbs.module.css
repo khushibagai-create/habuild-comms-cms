@@ -1,0 +1,39 @@
+/* Mirrors .crumbs in 10-comms-cms.html. */
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-3);
+  min-width: 0;
+}
+
+.crumbWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.crumb {
+  white-space: nowrap;
+}
+
+.clickable {
+  cursor: pointer;
+  transition: color 0.1s;
+}
+
+.clickable:hover,
+.clickable:focus-visible {
+  color: var(--accent-2);
+}
+
+.leaf {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.sep {
+  color: var(--text-4);
+}

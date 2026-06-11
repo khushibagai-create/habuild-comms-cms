@@ -1,0 +1,74 @@
+/* Mirrors .palette-picker / .pp-swatches / .pp-swatch in 10-comms-cms.html. */
+
+.wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-right: 4px;
+  flex: none;
+}
+
+.swatches {
+  display: flex;
+  gap: 10px;
+}
+
+.swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 6px;
+  border-radius: 8px;
+  border: 1.5px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+}
+
+.swatch:hover {
+  background: var(--bg-subtle);
+}
+
+.swatchSelected {
+  border-color: var(--text);
+  background: var(--bg-subtle);
+}
+
+.dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.1);
+  color: #ffffff;
+}
+
+.dot svg {
+  width: 12px;
+  height: 12px;
+  opacity: 0;
+}
+
+.swatchSelected .dot svg {
+  opacity: 1;
+}
+
+.name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.swatchSelected .name {
+  color: var(--text);
+}
