@@ -182,7 +182,7 @@ function Story2Fields({
 
   return (
     <>
-      <Group title="Deeper context" hint="Top of Story 2">
+      <Group title="More details" hint="Top of Story 2">
         <TextField
           label="Heading"
           value={asString(card.heading)}
